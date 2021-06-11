@@ -5,4 +5,5 @@ import com.buschmais.xo.neo4j.api.annotation.Label;
 
 @Label("ContextMapper")
 public interface ContextMapperDescriptor extends Descriptor {
+
 }

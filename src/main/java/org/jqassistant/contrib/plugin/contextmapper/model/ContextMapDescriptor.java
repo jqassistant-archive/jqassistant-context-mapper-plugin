@@ -20,7 +20,7 @@ public interface ContextMapDescriptor extends ContextMapperDescriptor {
 
     void setState(String state);
 
-    @Relation("CONTAINS")
+    @Relation("SHOWS")
     List<BoundedContextDescriptor> getBoundedContexts();
 
 }

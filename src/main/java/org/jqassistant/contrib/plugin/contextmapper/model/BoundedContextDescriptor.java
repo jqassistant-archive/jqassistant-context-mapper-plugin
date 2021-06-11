@@ -2,10 +2,14 @@ package org.jqassistant.contrib.plugin.contextmapper.model;
 
 import com.buschmais.xo.neo4j.api.annotation.Label;
 import com.buschmais.xo.neo4j.api.annotation.Relation;
+import org.jqassistant.contrib.plugin.contextmapper.report.ContextMapperLanguage;
 
 import java.util.List;
 import java.util.Set;
 
+import static org.jqassistant.contrib.plugin.contextmapper.report.ContextMapperLanguage.ContextMapperLanguageElement.BoundedContext;
+
+@ContextMapperLanguage(BoundedContext)
 @Label("BoundedContext")
 public interface BoundedContextDescriptor extends ContextMapperDescriptor {
 

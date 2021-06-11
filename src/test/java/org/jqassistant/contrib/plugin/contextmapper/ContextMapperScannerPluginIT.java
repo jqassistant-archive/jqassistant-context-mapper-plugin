@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ContextMapperScannerPluginIT extends AbstractPluginIT {
 
-    @TestStore(type = TestStore.Type.REMOTE)
+    //@TestStore(type = TestStore.Type.REMOTE)
     @Test
     public void scan() {
         store.beginTransaction();

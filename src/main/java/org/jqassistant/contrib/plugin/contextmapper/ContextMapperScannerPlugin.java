@@ -24,6 +24,7 @@ import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDefinesD
 import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.model.ContextMapDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.model.ContextMapperDescriptor;
+import org.jqassistant.contrib.plugin.contextmapper.model.ContextMapperFileDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.model.DomainDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.model.SubdomainDescriptor;
 
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
 @Requires(FileDescriptor.class)
 public class ContextMapperScannerPlugin extends AbstractScannerPlugin<FileResource, ContextMapperDescriptor> {
     @Override
-    public boolean accepts(FileResource fileResource, String path, Scope scope) throws IOException {
+    public boolean accepts(FileResource fileResource, String path, Scope scope) {
         return path.toLowerCase().endsWith(".cml");
     }
 
@@ -47,7 +48,7 @@ public class ContextMapperScannerPlugin extends AbstractScannerPlugin<FileResour
         StandaloneContextMapperAPI api = ContextMapperStandaloneSetup.getStandaloneAPI();
         CMLResource cml = api.loadCML(fileResource.getFile());
 
-        ContextMapperDescriptor contextMapperDescriptor = store.addDescriptorType(context.getCurrentDescriptor(), ContextMapperDescriptor.class);
+        ContextMapperFileDescriptor contextMapperDescriptor = store.addDescriptorType(context.getCurrentDescriptor(), ContextMapperFileDescriptor.class);
 
         List<DomainDescriptor> domains = EcoreUtil2.eAllOfType(cml.getContextMappingModel(), Domain.class).stream()
                 .map(d -> processDomain(store, d))
@@ -57,8 +58,9 @@ public class ContextMapperScannerPlugin extends AbstractScannerPlugin<FileResour
             .map(b -> processBoundedContexts(store, domains, b))
             .collect(Collectors.toList());
 
-        List<ContextMap> contextMaps = EcoreUtil2.eAllOfType(cml.getContextMappingModel(), ContextMap.class);
-        contextMaps.forEach(c -> processContextMap(store, c, boundedContexts));
+        EcoreUtil2.eAllOfType(cml.getContextMappingModel(), ContextMap.class).stream()
+                .map(c -> processContextMap(store, c, boundedContexts))
+                .forEach(c -> contextMapperDescriptor.getContextMaps().add(c));
 
         return contextMapperDescriptor;
     }
@@ -96,7 +98,7 @@ public class ContextMapperScannerPlugin extends AbstractScannerPlugin<FileResour
         return boundedContextDescriptor;
     }
 
-    private void processContextMap(Store store, ContextMap contextMap, List<BoundedContextDescriptor> boundedContextDescriptors) {
+    private ContextMapDescriptor processContextMap(Store store, ContextMap contextMap, List<BoundedContextDescriptor> boundedContextDescriptors) {
         ContextMapDescriptor contextMapDescriptor = store.create(ContextMapDescriptor.class);
         contextMapDescriptor.setName(contextMap.getName());
         if (contextMap.getState() != null) {
@@ -129,6 +131,8 @@ public class ContextMapperScannerPlugin extends AbstractScannerPlugin<FileResour
         });
 
         boundedContextDescriptors.forEach(b -> contextMapDescriptor.getBoundedContexts().add(b));
+
+        return contextMapDescriptor;
     }
 
     private Optional<DomainDescriptor> getDomainByName(List<DomainDescriptor> domainDescriptors, String name) {
