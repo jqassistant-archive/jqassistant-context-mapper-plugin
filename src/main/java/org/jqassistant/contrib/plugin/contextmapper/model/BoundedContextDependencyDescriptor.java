@@ -3,8 +3,11 @@ package org.jqassistant.contrib.plugin.contextmapper.model;
 import com.buschmais.jqassistant.core.store.api.model.Descriptor;
 import com.buschmais.xo.neo4j.api.annotation.Relation;
 
-import java.util.Set;
-
+/**
+ * Base descriptor for relationships between {@link BoundedContextDescriptor}s.
+ *
+ * @author Stephan Pirnbaum
+ */
 public interface BoundedContextDependencyDescriptor extends Descriptor {
 
     String getType();
@@ -20,9 +23,9 @@ public interface BoundedContextDependencyDescriptor extends Descriptor {
     void setTargetRoles(String[] roles);
 
     @Relation.Outgoing
-    BoundedContextDescriptor getSource();
+    BoundedContextBaseDescriptor getSource();
 
     @Relation.Incoming
-    BoundedContextDescriptor getTarget();
+    BoundedContextBaseDescriptor getTarget();
 
 }

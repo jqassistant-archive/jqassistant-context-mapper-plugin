@@ -12,6 +12,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Context Mapper language defining supported language elements.
+ *
+ * @author Stephan Pirnbaum
+ */
 @Language
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

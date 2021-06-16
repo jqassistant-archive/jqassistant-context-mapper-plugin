@@ -5,6 +5,11 @@ import com.buschmais.xo.neo4j.api.annotation.Relation;
 
 import java.util.List;
 
+/**
+ * Descriptor representing a context map with its {@link BoundedContextDescriptor}s.
+ *
+ * @author Stephan Pirnbaum
+ */
 @Label("ContextMap")
 public interface ContextMapDescriptor extends ContextMapperDescriptor {
 

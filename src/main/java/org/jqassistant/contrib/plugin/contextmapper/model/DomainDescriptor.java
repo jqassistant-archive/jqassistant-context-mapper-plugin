@@ -8,6 +8,11 @@ import java.util.List;
 
 import static org.jqassistant.contrib.plugin.contextmapper.report.ContextMapperLanguage.ContextMapperLanguageElement.Domain;
 
+/**
+ * Descriptor for domains.
+ *
+ * @author Stephan Pirnbaum
+ */
 @ContextMapperLanguage(Domain)
 @Label("Domain")
 public interface DomainDescriptor extends ContextMapperDescriptor {

@@ -1,0 +1,11 @@
+:toc: left
+= Context Mapper
+
+[[context-mapper:ContextMap]]
+[source,cypher,role=concept,reportType="context-mapper-diagram"]
+.Concept Description
+----
+MATCH (bC1:BoundedContext)
+OPTIONAL MATCH (bC1)-[d:DEPENDS_ON]->(bC2:BoundedContext)
+RETURN bC1, d, bC2
+----

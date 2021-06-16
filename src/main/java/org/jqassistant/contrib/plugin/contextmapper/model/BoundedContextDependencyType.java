@@ -2,6 +2,11 @@ package org.jqassistant.contrib.plugin.contextmapper.model;
 
 import lombok.Getter;
 
+/**
+ * DDD dependency type between {@link BoundedContextDescriptor}s.
+ *
+ * @author Stephan Pirnbaum
+ */
 @Getter
 public enum BoundedContextDependencyType {
     CUSTOMER_SUPPLIER("C/S"),

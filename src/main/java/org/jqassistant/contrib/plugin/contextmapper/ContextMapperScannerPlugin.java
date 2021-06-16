@@ -21,8 +21,14 @@ import java.util.stream.Collectors;
 
 import static org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependencyType.*;
 
+/**
+ * Scanner plug-in to enrich the graph based on a .cml-file.
+ *
+ * @author Stephan Pirnbaum
+ */
 @Requires(FileDescriptor.class)
 public class ContextMapperScannerPlugin extends AbstractScannerPlugin<FileResource, ContextMapperDescriptor> {
+
     @Override
     public boolean accepts(FileResource fileResource, String path, Scope scope) {
         return path.toLowerCase().endsWith(".cml");
@@ -89,12 +95,8 @@ public class ContextMapperScannerPlugin extends AbstractScannerPlugin<FileResour
     private ContextMapDescriptor processContextMap(Store store, ContextMap contextMap, List<BoundedContextDescriptor> boundedContextDescriptors) {
         ContextMapDescriptor contextMapDescriptor = store.create(ContextMapDescriptor.class);
         contextMapDescriptor.setName(contextMap.getName());
-        if (contextMap.getState() != null) {
-            contextMapDescriptor.setState(contextMap.getState().getName());
-        }
-        if (contextMap.getType() != null) {
-            contextMapDescriptor.setType(contextMap.getType().getName());
-        }
+        contextMapDescriptor.setType(contextMap.getType() != null ? contextMap.getType().getLiteral() : null);
+        contextMapDescriptor.setState(contextMap.getState() != null ? contextMap.getState().getLiteral() : null);
 
         contextMap.getRelationships().forEach(r -> {
             if (r instanceof UpstreamDownstreamRelationship) {

@@ -1,21 +1,24 @@
 package org.jqassistant.contrib.plugin.contextmapper.report;
 
-import com.buschmais.jqassistant.core.report.api.graph.model.Relationship;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
+import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextBaseDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependencyDescriptor;
-import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependsOn;
-import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDescriptor;
 
 import java.util.List;
 
+/**
+ * Model class representing the content of a context map.
+ *
+ * @author Stephan Pirnbaum
+ */
 @Getter
 @Builder
 public class ContextMapperDiagram {
 
     @Singular
-    private List<BoundedContextDescriptor> boundedContexts;
+    private List<BoundedContextBaseDescriptor> boundedContexts;
 
     @Singular
     private List<BoundedContextDependencyDescriptor> relationships;

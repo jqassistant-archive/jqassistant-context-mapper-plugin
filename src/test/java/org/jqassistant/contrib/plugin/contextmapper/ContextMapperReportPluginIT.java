@@ -1,96 +1,60 @@
 package org.jqassistant.contrib.plugin.contextmapper;
 
-import com.buschmais.jqassistant.core.report.api.graph.model.Node;
-import com.buschmais.jqassistant.core.report.api.graph.model.Relationship;
-import com.buschmais.jqassistant.core.report.api.graph.model.SubGraph;
+import com.buschmais.jqassistant.core.report.api.ReportContext;
+import com.buschmais.jqassistant.core.report.api.ReportPlugin;
+import com.buschmais.jqassistant.core.report.api.model.Result;
+import com.buschmais.jqassistant.core.report.impl.ReportContextImpl;
+import com.buschmais.jqassistant.core.rule.api.model.Concept;
+import com.buschmais.jqassistant.core.rule.api.model.CypherExecutable;
+import com.buschmais.jqassistant.core.rule.api.model.Report;
+import com.buschmais.jqassistant.core.rule.api.model.RuleException;
+import com.buschmais.jqassistant.core.rule.api.model.RuleSetBuilder;
+import com.buschmais.jqassistant.core.rule.api.model.Severity;
+import com.buschmais.jqassistant.core.scanner.api.DefaultScope;
 import com.buschmais.jqassistant.plugin.common.test.AbstractPluginIT;
-import org.contextmapper.contextmap.generator.model.ContextMap;
-import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependencyType;
-import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDescriptor;
-import org.jqassistant.contrib.plugin.contextmapper.report.ContextMapGenerator;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import static java.util.Arrays.asList;
-import static org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependencyType.SHARED_KERNEL;
-import static org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependencyType.UPSTREAM_DOWNSTREAM;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-
+import java.io.File;
+import java.util.HashMap;
 
 public class ContextMapperReportPluginIT extends AbstractPluginIT {
 
     //@TestStore(type = TestStore.Type.REMOTE)
     @Test
-    public void scan() {
+    public void scan() throws RuleException {
         store.beginTransaction();
-        ContextMap contextMap = new ContextMapGenerator().renderDiagram(getSubGraph());
+        File testFile = new File(getClassesDirectory(ContextMapperScannerPluginIT.class), "Insurance-Example-Stage-1.cml");
+
+        getScanner().scan(testFile, "Insurance-Example-Stage-1.cml", DefaultScope.NONE);
+        store.commitTransaction();
+
+        ReportContext reportContext = new ReportContextImpl(new File("target/"), new File("target/"));
+
+
+        Concept concept = Concept.builder()
+                .id("context-mapper:BoundedContexts")
+                .severity(Severity.MINOR)
+                .report(Report.builder().selectedTypes(Report.selectTypes("")).build())
+                .executable(new CypherExecutable("MATCH (bC1:BoundedContext) OPTIONAL MATCH (bC1)-[d:DEFINES_DEPENDENCY]->(bC2:BoundedContext) RETURN bC1, d, bC2"))
+                .build();
+
+        super.ruleSet.getConceptBucket().add(RuleSetBuilder.newInstance().addConcept(concept).getRuleSet().getConceptBucket());
+        Result<Concept> conceptResult = super.applyConcept("context-mapper:BoundedContexts");
+
+        store.beginTransaction();
+
+
+        ReportPlugin reportPlugin = new ContextMapperReportPlugin();
+        reportPlugin.configure(reportContext, new HashMap<>());
+        reportPlugin.initialize();
+        reportPlugin.begin();
+        reportPlugin.beginConcept(concept);
+        reportPlugin.setResult(conceptResult);
+        reportPlugin.endConcept();
+        reportPlugin.end();
+        reportPlugin.destroy();
+
         store.commitTransaction();
     }
 
-    private SubGraph getSubGraph() {
-        Node a1 = getNode(1, "bC1", "CustomerManagementContext", "ContextMapper", "BoundedContext");
-        Node a2 = getNode(2, "bC2", "CustomerSelfServiceContext", "BoundedContext");
-        Node a3 = getNode(3, "bC3", "PrintingContext", "BoundedContext");
-        Node a4 = getNode(4, "bC4", "PolicyManagementContext", "BoundedContext");
-        Node a5 = getNode(5, "bC5", "RiskManagementContext", "BoundedContext");
-        Node a6 = getNode(6, "bC6", "DebtCollection", "BoundedContext");
-
-        // 	CustomerSelfServiceContext <- CustomerManagementContext
-        Relationship r1 = getRelationship(1, a1, "DEPENDS_ON", UPSTREAM_DOWNSTREAM, a2);
-        //	CustomerManagementContext <- PrintingContext
-        Relationship r2 = getRelationship(2, a3, "DEPENDS_ON", UPSTREAM_DOWNSTREAM, a1);
-        //	PrintingContext -> PolicyManagementContext
-        Relationship r3 = getRelationship(3, a3, "DEPENDS_ON", UPSTREAM_DOWNSTREAM, a4);
-        //	RiskManagementContext <-> PolicyManagementContext
-        Relationship r4 = getRelationship(4, a5, "DEPENDS_ON", SHARED_KERNEL, a4);
-        //	PolicyManagementContext <- CustomerManagementContext
-        Relationship r5 = getRelationship(5, a1, "DEPENDS_ON", UPSTREAM_DOWNSTREAM, a4);
-        //	DebtCollection <- PrintingContext
-        Relationship r6 = getRelationship(6, a3, "DEPENDS_ON", UPSTREAM_DOWNSTREAM, a6);
-        //	PolicyManagementContext <-> DebtCollection
-        Relationship r7 = getRelationship(7, a4, "DEPENDS_ON", SHARED_KERNEL, a6);
-
-        SubGraph subGraph = new SubGraph();
-        subGraph.getNodes().put(a1.getId(), a1);
-        subGraph.getNodes().put(a2.getId(), a2);
-        subGraph.getNodes().put(a3.getId(), a3);
-        subGraph.getNodes().put(a4.getId(), a4);
-        subGraph.getNodes().put(a5.getId(), a5);
-        subGraph.getNodes().put(a6.getId(), a6);
-        subGraph.getRelationships().put(r1.getId(), r1);
-        subGraph.getRelationships().put(r2.getId(), r2);
-        subGraph.getRelationships().put(r3.getId(), r3);
-        subGraph.getRelationships().put(r4.getId(), r4);
-        subGraph.getRelationships().put(r5.getId(), r5);
-        subGraph.getRelationships().put(r6.getId(), r6);
-        subGraph.getRelationships().put(r7.getId(), r7);
-        return subGraph;
-    }
-
-    private Relationship getRelationship(long id, Node start, String type, BoundedContextDependencyType depType, Node end) {
-        Relationship relationship = new Relationship();
-        relationship.setId(id);
-        relationship.setStartNode(start);
-        relationship.setEndNode(end);
-        relationship.setType(type);
-        relationship.getProperties().put("type", depType.getType());
-        return relationship;
-    }
-
-    private BoundedContextDescriptor createBoundedContext(long id, String name) {
-        BoundedContextDescriptor mock = mock(BoundedContextDescriptor.class);
-        doReturn(name).when(mock).getName();
-        return mock;
-    }
-
-    private Node getNode(long id, String label, String name, String... labels) {
-
-        Node node = new Node();
-        node.setId(id);
-        node.setLabel(label);
-        node.getProperties().put("name", name);
-        node.getLabels().addAll(asList(labels));
-        return node;
-    }
 }
