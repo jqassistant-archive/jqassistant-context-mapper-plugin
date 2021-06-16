@@ -9,29 +9,17 @@ import com.buschmais.jqassistant.plugin.common.api.model.FileDescriptor;
 import com.buschmais.jqassistant.plugin.common.api.scanner.AbstractScannerPlugin;
 import com.buschmais.jqassistant.plugin.common.api.scanner.filesystem.FileResource;
 import org.contextmapper.dsl.cml.CMLResource;
-import org.contextmapper.dsl.contextMappingDSL.BoundedContext;
-import org.contextmapper.dsl.contextMappingDSL.ContextMap;
-import org.contextmapper.dsl.contextMappingDSL.CustomerSupplierRelationship;
-import org.contextmapper.dsl.contextMappingDSL.Domain;
-import org.contextmapper.dsl.contextMappingDSL.Partnership;
-import org.contextmapper.dsl.contextMappingDSL.SharedKernel;
-import org.contextmapper.dsl.contextMappingDSL.Subdomain;
-import org.contextmapper.dsl.contextMappingDSL.UpstreamDownstreamRelationship;
+import org.contextmapper.dsl.contextMappingDSL.*;
 import org.contextmapper.dsl.standalone.ContextMapperStandaloneSetup;
 import org.contextmapper.dsl.standalone.StandaloneContextMapperAPI;
 import org.eclipse.xtext.EcoreUtil2;
-import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDefinesDependency;
-import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDescriptor;
-import org.jqassistant.contrib.plugin.contextmapper.model.ContextMapDescriptor;
-import org.jqassistant.contrib.plugin.contextmapper.model.ContextMapperDescriptor;
-import org.jqassistant.contrib.plugin.contextmapper.model.ContextMapperFileDescriptor;
-import org.jqassistant.contrib.plugin.contextmapper.model.DomainDescriptor;
-import org.jqassistant.contrib.plugin.contextmapper.model.SubdomainDescriptor;
+import org.jqassistant.contrib.plugin.contextmapper.model.*;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependencyType.*;
 
 @Requires(FileDescriptor.class)
 public class ContextMapperScannerPlugin extends AbstractScannerPlugin<FileResource, ContextMapperDescriptor> {
@@ -112,19 +100,22 @@ public class ContextMapperScannerPlugin extends AbstractScannerPlugin<FileResour
             if (r instanceof UpstreamDownstreamRelationship) {
                 getBoundedContextByName(boundedContextDescriptors, ((UpstreamDownstreamRelationship) r).getUpstream().getName()).ifPresent(uS -> {
                     getBoundedContextByName(boundedContextDescriptors, ((UpstreamDownstreamRelationship) r).getDownstream().getName()).ifPresent(dS -> {
-                        createBoundedContextRelationship(store, uS, dS, (r instanceof CustomerSupplierRelationship) ? "C/S" : "U/D");
+                        String[] sourceRoles = ((UpstreamDownstreamRelationship) r).getDownstreamRoles().stream().map(DownstreamRole::getLiteral).toArray(String[]::new);
+                        String[] targetRoles = ((UpstreamDownstreamRelationship) r).getUpstreamRoles().stream().map(UpstreamRole::getLiteral).toArray(String[]::new);
+
+                        createBoundedContextRelationship(store, dS, sourceRoles, uS, targetRoles, (r instanceof CustomerSupplierRelationship) ? CUSTOMER_SUPPLIER.getType() : UPSTREAM_DOWNSTREAM.getType());
                     });
                 });
             } else if (r instanceof SharedKernel) {
                 getBoundedContextByName(boundedContextDescriptors, ((SharedKernel) r).getParticipant1().getName()).ifPresent(p1 -> {
                     getBoundedContextByName(boundedContextDescriptors, ((SharedKernel) r).getParticipant2().getName()).ifPresent(p2 -> {
-                        createBoundedContextRelationship(store, p1, p2, "SK");
+                        createBoundedContextRelationship(store, p1, p2, SHARED_KERNEL.getType());
                     });
                 });
             } else if (r instanceof Partnership) {
                 getBoundedContextByName(boundedContextDescriptors, ((Partnership) r).getParticipant1().getName()).ifPresent(p1 -> {
                     getBoundedContextByName(boundedContextDescriptors, ((Partnership) r).getParticipant2().getName()).ifPresent(p2 -> {
-                        createBoundedContextRelationship(store, p1, p2, "P");
+                        createBoundedContextRelationship(store, p1, p2, PARTNERSHIP.getType());
                     });
                 });
             }
@@ -155,8 +146,14 @@ public class ContextMapperScannerPlugin extends AbstractScannerPlugin<FileResour
     }
 
     private void createBoundedContextRelationship(Store store, BoundedContextDescriptor source, BoundedContextDescriptor target, String type) {
+        createBoundedContextRelationship(store, source, new String[0], target, new String[0], type);
+    }
+
+    private void createBoundedContextRelationship(Store store, BoundedContextDescriptor source, String[] sourceRules, BoundedContextDescriptor target, String[] targetRoles, String type) {
         BoundedContextDefinesDependency boundedContextDefinesDependency = store.create(source, BoundedContextDefinesDependency.class, target);
         boundedContextDefinesDependency.setType(type);
+        boundedContextDefinesDependency.setSourceRoles(sourceRules);
+        boundedContextDefinesDependency.setTargetRoles(targetRoles);
     }
 
 }

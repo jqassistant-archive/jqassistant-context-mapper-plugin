@@ -5,6 +5,7 @@
     <description>Provides a scanner for ContextMapper files and renderer for ContextMapper diagrams.</description>
     <model>
         <class>org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDefinesDependency</class>
+        <class>org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependsOn</class>
         <class>org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDescriptor</class>
         <class>org.jqassistant.contrib.plugin.contextmapper.model.ContextMapDescriptor</class>
         <class>org.jqassistant.contrib.plugin.contextmapper.model.ContextMapperDescriptor</class>

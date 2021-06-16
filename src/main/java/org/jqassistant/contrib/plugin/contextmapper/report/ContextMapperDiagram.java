@@ -4,6 +4,8 @@ import com.buschmais.jqassistant.core.report.api.graph.model.Relationship;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
+import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependencyDescriptor;
+import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependsOn;
 import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDescriptor;
 
 import java.util.List;
@@ -16,6 +18,6 @@ public class ContextMapperDiagram {
     private List<BoundedContextDescriptor> boundedContexts;
 
     @Singular
-    private List<Relationship> relationships;
+    private List<BoundedContextDependencyDescriptor> relationships;
 
 }
