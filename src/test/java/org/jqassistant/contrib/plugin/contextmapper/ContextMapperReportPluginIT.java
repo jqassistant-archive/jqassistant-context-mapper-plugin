@@ -30,7 +30,6 @@ public class ContextMapperReportPluginIT extends AbstractPluginIT {
 
         ReportContext reportContext = new ReportContextImpl(new File("target/"), new File("target/"));
 
-
         Concept concept = Concept.builder()
                 .id("context-mapper:BoundedContexts")
                 .severity(Severity.MINOR)
@@ -38,11 +37,10 @@ public class ContextMapperReportPluginIT extends AbstractPluginIT {
                 .executable(new CypherExecutable("MATCH (bC1:BoundedContext) OPTIONAL MATCH (bC1)-[d:DEFINES_DEPENDENCY]->(bC2:BoundedContext) RETURN bC1, d, bC2"))
                 .build();
 
-        super.ruleSet.getConceptBucket().add(RuleSetBuilder.newInstance().addConcept(concept).getRuleSet().getConceptBucket());
-        Result<Concept> conceptResult = super.applyConcept("context-mapper:BoundedContexts");
+        ruleSet.getConceptBucket().add(RuleSetBuilder.newInstance().addConcept(concept).getRuleSet().getConceptBucket());
+        Result<Concept> conceptResult = applyConcept("context-mapper:BoundedContexts");
 
         store.beginTransaction();
-
 
         ReportPlugin reportPlugin = new ContextMapperReportPlugin();
         reportPlugin.configure(reportContext, new HashMap<>());

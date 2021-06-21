@@ -16,7 +16,6 @@ import org.contextmapper.dsl.contextMappingDSL.UpstreamRole;
 import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextBaseDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependencyDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDependencyType;
-import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.report.ContextMapperDiagram.ContextMapperDiagramBuilder;
 
 import java.util.Arrays;

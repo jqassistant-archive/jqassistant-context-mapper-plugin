@@ -12,7 +12,33 @@
 
     <groupId>org.jqassistant.contrib.plugin</groupId>
     <artifactId>jqassistant-context-mapper-plugin</artifactId>
-    <version>1.10.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <url>http://jqassistant.org/</url>
+    <description>
+        jMolecules Plugin for jQAssistant.
+    </description>
+
+    <organization>
+        <name>BUSCHMAIS GbR</name>
+        <url>http://www.buschmais.com</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>StephanPirnbaum</id>
+            <name>Stephan Pirnbaum</name>
+            <email>stephan.pirnbaum@buschmais.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:jqassistant-contrib/jqassistant-context-mapper-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jqassistant-contrib/jqassistant-context-mapper-plugin.git
+        </developerConnection>
+        <url>https://github.com/jqassistant-contrib/jqassistant-context-mapper-plugin</url>
+        <tag>1.0.0</tag>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -27,6 +53,22 @@
             <groupId>org.contextmapper</groupId>
             <artifactId>context-mapper-dsl</artifactId>
             <version>6.5.0</version>
+            <exclusions>
+                <exclusion>
+                    <!-- Exclusion added to remove transitive dependency to Equinox, which requires Java 11 -->
+                    <groupId>org.contextmapper</groupId>
+                    <artifactId>henshin-interpreter</artifactId>
+                </exclusion>
+                <!-- Exclusion added since Neo4j is bringing in a conflicting version -->
+                <exclusion>
+                    <groupId>bouncycastle</groupId>
+                    <artifactId>bcprov-jdk14</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>bouncycastle</groupId>
+                    <artifactId>bcmail-jdk14</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.contextmapper</groupId>

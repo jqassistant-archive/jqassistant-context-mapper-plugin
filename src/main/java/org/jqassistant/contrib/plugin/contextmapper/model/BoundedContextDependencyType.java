@@ -22,7 +22,7 @@ public enum BoundedContextDependencyType {
 
     public static BoundedContextDependencyType getByType(String type) {
         if (type == null || type.isEmpty()) {
-            return CUSTOMER_SUPPLIER;
+            return UPSTREAM_DOWNSTREAM;
         } else {
             switch (type) {
                 case "C/S": return CUSTOMER_SUPPLIER;

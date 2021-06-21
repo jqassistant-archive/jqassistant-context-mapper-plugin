@@ -3,6 +3,7 @@ package org.jqassistant.contrib.plugin.contextmapper.report;
 import com.buschmais.jqassistant.core.report.api.SourceProvider;
 import com.buschmais.jqassistant.core.report.api.model.Language;
 import com.buschmais.jqassistant.core.report.api.model.LanguageElement;
+import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextBaseDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.model.DomainDescriptor;
 import org.jqassistant.contrib.plugin.contextmapper.model.SubdomainDescriptor;
@@ -27,20 +28,20 @@ public @interface ContextMapperLanguage {
     enum ContextMapperLanguageElement implements LanguageElement {
         BoundedContext {
             @Override
-            public SourceProvider<BoundedContextDescriptor> getSourceProvider() {
-                return new SourceProvider<BoundedContextDescriptor>() {
+            public SourceProvider<BoundedContextBaseDescriptor> getSourceProvider() {
+                return new SourceProvider<BoundedContextBaseDescriptor>() {
                     @Override
-                    public String getName(BoundedContextDescriptor boundedContextDescriptor) {
+                    public String getName(BoundedContextBaseDescriptor boundedContextDescriptor) {
                         return boundedContextDescriptor.getName();
                     }
 
                     @Override
-                    public String getSourceFile(BoundedContextDescriptor boundedContextDescriptor) {
+                    public String getSourceFile(BoundedContextBaseDescriptor boundedContextDescriptor) {
                         return null;
                     }
 
                     @Override
-                    public Integer getLineNumber(BoundedContextDescriptor boundedContextDescriptor) {
+                    public Integer getLineNumber(BoundedContextBaseDescriptor boundedContextDescriptor) {
                         return null;
                     }
                 };

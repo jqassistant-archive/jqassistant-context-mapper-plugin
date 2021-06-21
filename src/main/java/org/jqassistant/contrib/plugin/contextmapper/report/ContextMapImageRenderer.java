@@ -29,10 +29,11 @@ public class ContextMapImageRenderer {
      */
     public File renderDiagram(ContextMap map, ExecutableRule rule, File directory, Format fileFormat) throws IOException {
         String fileName = rule.getId().replace(":", "_") + "." + fileFormat.fileExtension;
+        File file = new File(directory, fileName);
         new ContextMapGenerator()
                 .setBaseDir(directory)
-                .generateContextMapGraphic(map, fileFormat, fileName);
-        return new File(directory, fileName);
+                .generateContextMapGraphic(map, fileFormat, file.toPath().toString());
+        return file;
     }
 
 }
