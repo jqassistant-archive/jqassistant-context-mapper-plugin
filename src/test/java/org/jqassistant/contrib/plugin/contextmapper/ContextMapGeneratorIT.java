@@ -35,16 +35,14 @@ public class ContextMapGeneratorIT extends AbstractPluginIT {
 
     @Test
     public void testContextMapperNodes() throws RuleException {
-        store.beginTransaction();
         File testFile = new File(getClassesDirectory(ContextMapperScannerPluginIT.class), "Insurance-Example-Stage-2.cml");
 
         getScanner().scan(testFile, "Insurance-Example-Stage-2.cml", DefaultScope.NONE);
-        store.commitTransaction();
 
         Concept concept = Concept.builder()
                 .id("context-mapper:BoundedContexts")
                 .severity(Severity.MINOR)
-                .report(Report.builder().selectedTypes(Report.selectTypes("")).build())
+                .report(Report.builder().selectedTypes(Report.selectTypes("context-mapper-diagram")).build())
                 .executable(new CypherExecutable("MATCH (bC1:BoundedContext) OPTIONAL MATCH (bC1)-[d:DEFINES_DEPENDENCY]->(bC2:BoundedContext) RETURN bC1, d, bC2"))
                 .build();
 
@@ -84,7 +82,7 @@ public class ContextMapGeneratorIT extends AbstractPluginIT {
         Concept concept = Concept.builder()
                 .id("jMolecules:BoundedContexts")
                 .severity(Severity.MINOR)
-                .report(Report.builder().selectedTypes(Report.selectTypes("")).build())
+                .report(Report.builder().selectedTypes(Report.selectTypes("context-mapper-diagram")).build())
                 .executable(new CypherExecutable("MATCH (bC1:BoundedContext)-[d:DEPENDS_ON]->(bC2:BoundedContext) RETURN bC1, d, bC2"))
                 .build();
 
