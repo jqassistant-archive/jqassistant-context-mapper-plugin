@@ -38,7 +38,7 @@ public class ContextMapGeneratorIT extends AbstractPluginIT {
         store.beginTransaction();
         File testFile = new File(getClassesDirectory(ContextMapperScannerPluginIT.class), "Insurance-Example-Stage-2.cml");
 
-        getScanner().scan(testFile, "Insurance-Example-Stage-1.cml", DefaultScope.NONE);
+        getScanner().scan(testFile, "Insurance-Example-Stage-2.cml", DefaultScope.NONE);
         store.commitTransaction();
 
         Concept concept = Concept.builder()

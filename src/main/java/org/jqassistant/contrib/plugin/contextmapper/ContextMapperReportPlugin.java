@@ -38,7 +38,7 @@ public class ContextMapperReportPlugin implements ReportPlugin {
 
 
     @Override
-    public void configure(ReportContext reportContext, Map<String, Object> properties) {
+    public void configure(ReportContext reportContext, Map<String, Object> properties) throws ReportException {
         this.reportContext = reportContext;
         directory = reportContext.getReportDirectory("context-mapper");
         String format = (String) properties.getOrDefault(PROPERTY_FILE_FORMAT, DEFAULT_FILE_FORMAT.fileExtension);
@@ -48,7 +48,7 @@ public class ContextMapperReportPlugin implements ReportPlugin {
             case "png": fileFormat = PNG;
                 break;
             default:
-                // todo unsupported type
+                throw new ReportException("Unsupported report type: " + format);
         }
     }
 

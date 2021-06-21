@@ -44,7 +44,6 @@ public class ContextMapperScannerPluginIT extends AbstractPluginIT {
         }
     }
 
-    //@TestStore(type = TestStore.Type.REMOTE)
     @Test
     public void testInsuranceExample1() {
         store.beginTransaction();
