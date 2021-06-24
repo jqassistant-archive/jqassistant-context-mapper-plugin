@@ -150,6 +150,10 @@
                         <goals>
                             <goal>delombok</goal>
                         </goals>
+                        <configuration>
+                            <addOutputDirectory>false</addOutputDirectory>
+                            <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
