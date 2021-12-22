@@ -1,7 +1,7 @@
 <jqassistant-plugin xmlns="http://schema.jqassistant.org/plugin/v1.8"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xsi:schemaLocation="http://schema.jqassistant.org/plugin/v1.8 https://schema.jqassistant.org/plugin/jqassistant-plugin-v1.8.xsd"
-                    name="CSV Example">
+                    name="ContextMapper" id="contextmapper">
     <description>Provides a scanner for ContextMapper files and renderer for ContextMapper diagrams.</description>
     <model>
         <class>org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextBaseDescriptor</class>
