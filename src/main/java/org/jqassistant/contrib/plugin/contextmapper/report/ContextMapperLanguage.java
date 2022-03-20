@@ -1,17 +1,17 @@
 package org.jqassistant.contrib.plugin.contextmapper.report;
 
-import com.buschmais.jqassistant.core.report.api.SourceProvider;
-import com.buschmais.jqassistant.core.report.api.model.Language;
-import com.buschmais.jqassistant.core.report.api.model.LanguageElement;
-import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextBaseDescriptor;
-import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDescriptor;
-import org.jqassistant.contrib.plugin.contextmapper.model.DomainDescriptor;
-import org.jqassistant.contrib.plugin.contextmapper.model.SubdomainDescriptor;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import com.buschmais.jqassistant.core.report.api.SourceProvider;
+import com.buschmais.jqassistant.core.report.api.model.Language;
+import com.buschmais.jqassistant.core.report.api.model.LanguageElement;
+
+import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextBaseDescriptor;
+import org.jqassistant.contrib.plugin.contextmapper.model.DomainDescriptor;
+import org.jqassistant.contrib.plugin.contextmapper.model.SubdomainDescriptor;
 
 /**
  * Context Mapper language defining supported language elements.
@@ -29,62 +29,17 @@ public @interface ContextMapperLanguage {
         BoundedContext {
             @Override
             public SourceProvider<BoundedContextBaseDescriptor> getSourceProvider() {
-                return new SourceProvider<BoundedContextBaseDescriptor>() {
-                    @Override
-                    public String getName(BoundedContextBaseDescriptor boundedContextDescriptor) {
-                        return boundedContextDescriptor.getName();
-                    }
-
-                    @Override
-                    public String getSourceFile(BoundedContextBaseDescriptor boundedContextDescriptor) {
-                        return null;
-                    }
-
-                    @Override
-                    public Integer getLineNumber(BoundedContextBaseDescriptor boundedContextDescriptor) {
-                        return null;
-                    }
-                };
+                return boundedContextDescriptor -> boundedContextDescriptor.getName();
             }
         },
         Domain {
             public SourceProvider<DomainDescriptor> getSourceProvider() {
-                return new SourceProvider<DomainDescriptor>() {
-                    @Override
-                    public String getName(DomainDescriptor domainDescriptor) {
-                        return domainDescriptor.getName();
-                    }
-
-                    @Override
-                    public String getSourceFile(DomainDescriptor domainDescriptor) {
-                        return null;
-                    }
-
-                    @Override
-                    public Integer getLineNumber(DomainDescriptor domainDescriptor) {
-                        return null;
-                    }
-                };
+                return domainDescriptor -> domainDescriptor.getName();
             }
         },
         Subdomain {
             public SourceProvider<SubdomainDescriptor> getSourceProvider() {
-                return new SourceProvider<SubdomainDescriptor>() {
-                    @Override
-                    public String getName(SubdomainDescriptor subdomainDescriptor) {
-                        return subdomainDescriptor.getName();
-                    }
-
-                    @Override
-                    public String getSourceFile(SubdomainDescriptor subdomainDescriptor) {
-                        return null;
-                    }
-
-                    @Override
-                    public Integer getLineNumber(SubdomainDescriptor subdomainDescriptor) {
-                        return null;
-                    }
-                };
+                return subdomainDescriptor -> subdomainDescriptor.getName();
             }
         };
 
