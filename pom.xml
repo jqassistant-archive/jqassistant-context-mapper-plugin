@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.jqassistant.contrib.common</groupId>
         <artifactId>parent</artifactId>
-        <version>1.12.0-M1</version>
+        <version>1.12.0</version>
     </parent>
 
     <groupId>org.jqassistant.contrib.plugin</groupId>
