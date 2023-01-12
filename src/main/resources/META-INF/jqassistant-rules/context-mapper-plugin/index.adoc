@@ -1,0 +1,15 @@
+= Context Mapper Plugin
+
+[[context-mapper-plugin:Default]]
+[role=group,includesConcepts="context-mapper-plugin:*"]
+== Context Maps
+
+[[context-mapper-plugin:ContextMapReport]]
+[source,cypher,role=concept,reportType="context-mapper-diagram"]
+----
+MATCH (cM:ContextMapper:ContextMap),
+      (cM)-[:SHOWS]->(bC1:ContextMapper:BoundedContext),
+      (cM)-[:SHOWS]->(bC2:ContextMapper:BoundedContext)
+OPTIONAL MATCH (bC1)-[d:DEFINES_DEPENDENCY]->(bC2)
+RETURN bC1, d, bC2
+----

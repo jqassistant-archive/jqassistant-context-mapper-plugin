@@ -2,7 +2,7 @@ package org.jqassistant.contrib.plugin.contextmapper;
 
 import com.buschmais.jqassistant.core.scanner.api.DefaultScope;
 import com.buschmais.jqassistant.core.store.api.model.Descriptor;
-import com.buschmais.jqassistant.plugin.common.test.AbstractPluginIT;
+import com.buschmais.jqassistant.core.test.plugin.AbstractPluginIT;
 import lombok.Builder;
 import lombok.Singular;
 import org.jqassistant.contrib.plugin.contextmapper.model.BoundedContextDefinesDependency;

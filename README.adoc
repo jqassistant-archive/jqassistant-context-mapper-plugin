@@ -133,6 +133,41 @@ RETURN bC1, d, bC2
 ----
 -----
 
+=== Distributed Asciidoc Files
+
+The plugin comes with a default Asciidoc file including a concept to render a Context Map.
+With that, it's not necessary to write a custom concept in order to render the scanned Context Map.
+Following is the concept for better understanding:
+
+[source, asciidoc]
+-----
+[[context-mapper-plugin:ContextMapReport]]
+[source,cypher,role=concept,reportType="context-mapper-diagram"]
+----
+MATCH (cM:ContextMapper:ContextMap),
+      (cM)-[:SHOWS]->(bC1:ContextMapper:BoundedContext),
+      (cM)-[:SHOWS]->(bC2:ContextMapper:BoundedContext)
+OPTIONAL MATCH (bC1)-[d:DEFINES_DEPENDENCY]->(bC2)
+RETURN bC1, d, bC2
+----
+-----
+
+In order to use this as a whole, you can include the provided Asciidoc file as follows:
+
+[source, asciidoc]
+-----
+include::/context-mapper-plugin/index.adoc[leveloffset=+1]
+-----
+
+NOTE: The leveloffset may be different in your specific case.
+
+If you just want to have the concept rendered without the rest of the provided AsciiDoc, simply do the following:
+
+[source, asciidoc]
+-----
+include::jQA:Rules[concepts="context-mapper-plugin:ContextMapReport"]
+-----
+
 == Validating the as-is against the to-be architecture
 
 Having the 'to-be' and 'as-is' architecture in the Graph, one can easily check for architecture violations, e.g.

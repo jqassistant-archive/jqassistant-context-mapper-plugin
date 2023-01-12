@@ -34,16 +34,6 @@ public @interface ContextMapperLanguage {
                     public String getName(BoundedContextBaseDescriptor boundedContextDescriptor) {
                         return boundedContextDescriptor.getName();
                     }
-
-                    @Override
-                    public String getSourceFile(BoundedContextBaseDescriptor boundedContextDescriptor) {
-                        return null;
-                    }
-
-                    @Override
-                    public Integer getLineNumber(BoundedContextBaseDescriptor boundedContextDescriptor) {
-                        return null;
-                    }
                 };
             }
         },
@@ -54,16 +44,6 @@ public @interface ContextMapperLanguage {
                     public String getName(DomainDescriptor domainDescriptor) {
                         return domainDescriptor.getName();
                     }
-
-                    @Override
-                    public String getSourceFile(DomainDescriptor domainDescriptor) {
-                        return null;
-                    }
-
-                    @Override
-                    public Integer getLineNumber(DomainDescriptor domainDescriptor) {
-                        return null;
-                    }
                 };
             }
         },
@@ -73,16 +53,6 @@ public @interface ContextMapperLanguage {
                     @Override
                     public String getName(SubdomainDescriptor subdomainDescriptor) {
                         return subdomainDescriptor.getName();
-                    }
-
-                    @Override
-                    public String getSourceFile(SubdomainDescriptor subdomainDescriptor) {
-                        return null;
-                    }
-
-                    @Override
-                    public Integer getLineNumber(SubdomainDescriptor subdomainDescriptor) {
-                        return null;
                     }
                 };
             }

@@ -8,7 +8,7 @@ import com.buschmais.jqassistant.core.rule.api.model.RuleException;
 import com.buschmais.jqassistant.core.rule.api.model.RuleSetBuilder;
 import com.buschmais.jqassistant.core.rule.api.model.Severity;
 import com.buschmais.jqassistant.core.scanner.api.DefaultScope;
-import com.buschmais.jqassistant.plugin.common.test.AbstractPluginIT;
+import com.buschmais.jqassistant.core.test.plugin.AbstractPluginIT;
 import org.contextmapper.contextmap.generator.model.BoundedContext;
 import org.contextmapper.contextmap.generator.model.ContextMap;
 import org.contextmapper.contextmap.generator.model.Partnership;
