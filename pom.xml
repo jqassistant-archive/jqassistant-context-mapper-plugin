@@ -102,6 +102,7 @@
         <dependency>
             <groupId>com.buschmais.jqassistant.neo4jserver</groupId>
             <artifactId>neo4jv3</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.buschmais.jqassistant.plugin</groupId>
