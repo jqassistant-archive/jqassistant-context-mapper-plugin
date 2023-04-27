@@ -1,5 +1,7 @@
 = jqassistant-context-mapper-plugin
 
+NOTE:: This project has been archived and is no longer actively developed. It has been superseded by the https://github.com/jqassistant-plugin/jqassistant-context-mapper-plugin[jqassistant-context-mapper-plugin]
+
 The `jqassistant-context-mapper-plugin` integrates the two open-source projects jQAssistant and Context Mapper [1] with each other.
 
 With the plug-in, it is possible to scan Context Mapper files (.cml) in order to enrich the documented architecture to the software graph created by jQAssisstant.
